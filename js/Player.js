@@ -16,10 +16,10 @@ class Player {
     // We create a DOM node. We will be updating the DOM node every time we move the player, so we store a reference to the
     // DOM node in a property.
     this.domElement = document.createElement('img');
-    this.domElement.src = 'images/player.png';
+    this.domElement.src = 'images/Player-PPG.png';
     this.domElement.style.position = 'absolute';
     this.domElement.style.left = `${this.x}px`;
-    this.domElement.style.top = ` ${y}px`;
+    this.domElement.style.top = `${y}px`;
     this.domElement.style.zIndex = '10';
     root.appendChild(this.domElement);
   }
@@ -41,4 +41,4 @@ class Player {
     }
     this.domElement.style.left = `${this.x}px`;
   }
-}
+  }

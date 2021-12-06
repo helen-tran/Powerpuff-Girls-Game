@@ -5,7 +5,7 @@ class Enemy {
   // The constructor takes 2 arguments.
   // - theRoot refers to the parent DOM element.
   //   We need a way to add the DOM element we create in this constructor to our DOM.
-  // - enemySpot is the position of the enemy (either 0, 1, 2, 3 or 4)
+  // - enemySpot is the position of the enemy (either 0, 1, 2, 3 or 4) - where u can move the arrow on keys 5 times (left)
   // Since the constructor takes 2 parameters
   // and the 2 parameters provide important information, we must supply 2 arguments to "new" every time we
   // create an instance of this class.
@@ -24,10 +24,12 @@ class Enemy {
     this.x = enemySpot * ENEMY_WIDTH;
 
     // The y position is initially less than 0 so that the enemies fall from the top. This data is stored as a property
-    // of the instance since it is needed throughout its lifetime. The destroyed property will indicate whether this enemy
+    // of the instance since it is needed throughout its lifetime.
+    this.y = -ENEMY_HEIGHT;
+  
+    // The destroyed property will indicate whether this enemy
     // is still in play. It is set to true whenever the enemy goes past the bottom of the screen.
     // It is used in the Engine to determine whether or not an enemy is in a particular column.
-    this.y = -ENEMY_HEIGHT;
     this.destroyed = false;
 
     // We create a new DOM element. The tag of this DOM element is img. It is the DOM node that will display the enemy image
@@ -36,17 +38,20 @@ class Enemy {
     this.domElement = document.createElement('img');
 
     // We give it a src attribute to specify which image to display.
-    this.domElement.src = './images/enemy.png';
+    this.domElement.src = './images/Enemy.png';
     // We modify the CSS style of the DOM node.
     this.domElement.style.position = 'absolute';
     this.domElement.style.left = `${this.x}px`;
     this.domElement.style.top = `${this.y}px`;
     this.domElement.style.zIndex = 5;
 
+
     // Show that the user can actually see the img DOM node, we append it to the root DOM node.
     theRoot.appendChild(this.domElement);
     this.speed = Math.random() / 2 + 0.25;
   }
+
+
 
   // We set the speed property of the enemy. This determines how fast it moves down the screen.
   // To make sure that every enemy has a different speed, we use Math.random()

@@ -14,22 +14,25 @@ class Engine {
     // Initially, we have no enemies in the game. The enemies property refers to an array
     // that contains instances of the Enemy class
     this.enemies = [];
+    this.score = 0;
     // We add the background image to the game
     addBackground(this.root);
   }
-
-  // The gameLoop will run every few milliseconds. It does several things
-  //  - Updates the enemy positions
-  //  - Detects a collision between the player and any enemy
-  //  - Removes enemies that are too low from the enemies array
-  gameLoop = () => {
-    // This code is to see how much time, in milliseconds, has elapsed since the last
-    // time this method was called.
-    // (new Date).getTime() evaluates to the number of milliseconds since January 1st, 1970 at midnight.
-    if (this.lastFrame === undefined) {
-      this.lastFrame = new Date().getTime();
-    }
-
+  
+// The gameLoop will run every few milliseconds. It does several things
+//  - Updates the enemy positions
+//  - Detects a collision between the player and any enemy
+//  - Removes enemies that are too low from the enemies array
+gameLoop = () => {
+  // 
+  
+  // This code is to see how much time, in milliseconds, has elapsed since the last
+  // time this method was called.
+  // (new Date).getTime() evaluates to the number of milliseconds since January 1st, 1970 at midnight.
+  if (this.lastFrame === undefined) {
+    this.lastFrame = new Date().getTime();
+  }
+  
     let timeDiff = new Date().getTime() - this.lastFrame;
 
     this.lastFrame = new Date().getTime();
@@ -42,7 +45,12 @@ class Engine {
     // We remove all the destroyed enemies from the array referred to by \`this.enemies\`.
     // We use filter to accomplish this.
     // Remember: this.enemies only contains instances of the Enemy class.
+      let scorePts = document.querySelector(".scorePts");
     this.enemies = this.enemies.filter((enemy) => {
+      if (enemy.destroyed){
+        this.score++;
+        scorePts.innerText = this.score;
+      }
       return !enemy.destroyed;
     });
 
@@ -57,8 +65,18 @@ class Engine {
     // We check if the player is dead. If he is, we alert the user
     // and return from the method (Why is the return statement important?)
     if (this.isPlayerDead()) {
-      window.alert('Game over');
+      const endGame = document.querySelector(".end-game");
+      endGame.style.display = "block";
+      endGame.style.position = "absolute";
       return;
+    }
+    
+    // restart button
+    const restartBtn = document.querySelector(".restart");
+    restartBtn.addEventListener("click", restartGame)
+
+    function restartGame() {
+      window.location.reload();
     }
 
     // If the player is not dead, then we put a setTimeout to run the gameLoop in 20 milliseconds
@@ -68,6 +86,17 @@ class Engine {
   // This method is not implemented correctly, which is why
   // the burger never dies. In your exercises you will fix this method.
   isPlayerDead = () => {
-    return false;
-  };
+    let playerDead = false;
+
+    this.enemies.forEach(enemy =>{
+    if (enemy.x === this.player.x &&
+      GAME_HEIGHT - PLAYER_HEIGHT <= enemy.y + ENEMY_HEIGHT){
+      playerDead = true;
+    }
+  })
+
+    
+  return playerDead;
+  
 }
+};
